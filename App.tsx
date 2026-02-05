@@ -464,36 +464,38 @@ const App: React.FC = () => {
                 </section>
 
                 <section>
-                  <div className="flex justify-between items-center mb-6">
+                  <div className="flex justify-between items-center mb-5">
                     <h3 className="text-lg font-bold flex items-center gap-2 text-indigo-600"><Briefcase className="w-5 h-5" /> Kinh nghiệm</h3>
                     <button onClick={() => { const newExp: Experience = { id: crypto.randomUUID(), company: '', position: '', startDate: '', endDate: '', description: '' }; updateActiveCV({ experience: [...activeCV.experience, newExp] }); }} className="p-1 bg-indigo-100 text-indigo-600 rounded hover:bg-indigo-200"><Plus className="w-5 h-5" /></button>
                   </div>
-                  <div className="space-y-6">
+                  <div className="space-y-5">
                     {activeCV.experience.map((exp, idx) => (
-                      <div key={exp.id} className="p-4 border border-gray-100 rounded-xl bg-slate-50 relative group">
-                        <button onClick={() => updateActiveCV({ experience: activeCV.experience.filter(e => e.id !== exp.id) })} className="absolute top-4 right-4 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="w-4 h-4" /></button>
-                        <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div key={exp.id} className="p-4 border border-gray-100 rounded-lg bg-slate-50 relative group">
+                        <button onClick={() => updateActiveCV({ experience: activeCV.experience.filter(e => e.id !== exp.id) })} className="absolute top-3 right-3 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="w-4 h-4" /></button>
+                        <div className="grid grid-cols-2 gap-3 mb-3">
                           <input placeholder="Công ty" value={exp.company} onChange={(e) => { const newExp = [...activeCV.experience]; newExp[idx].company = e.target.value; updateActiveCV({ experience: newExp }); }} className="px-3 py-2 bg-white border border-gray-200 rounded text-sm" />
                           <input placeholder="Vị trí" value={exp.position} onChange={(e) => { const newExp = [...activeCV.experience]; newExp[idx].position = e.target.value; updateActiveCV({ experience: newExp }); }} className="px-3 py-2 bg-white border border-gray-200 rounded text-sm" />
+                          <input type="month" placeholder="Từ tháng" value={exp.startDate} onChange={(e) => { const newExp = [...activeCV.experience]; newExp[idx].startDate = e.target.value; updateActiveCV({ experience: newExp }); }} className="px-3 py-2 bg-white border border-gray-200 rounded text-sm" />
+                          <input type="month" placeholder="Đến tháng" value={exp.endDate} onChange={(e) => { const newExp = [...activeCV.experience]; newExp[idx].endDate = e.target.value; updateActiveCV({ experience: newExp }); }} className="px-3 py-2 bg-white border border-gray-200 rounded text-sm" />
                         </div>
-                        <textarea placeholder="Mô tả công việc" rows={3} value={exp.description} onChange={(e) => { const newExp = [...activeCV.experience]; newExp[idx].description = e.target.value; updateActiveCV({ experience: newExp }); }} className="w-full px-3 py-2 bg-white border border-gray-200 rounded text-sm resize-none" />
-                        <button onClick={() => handleAiOptimize('Mô tả kinh nghiệm', exp.description, (val) => { const newExp = [...activeCV.experience]; newExp[idx].description = val; updateActiveCV({ experience: newExp }); })} className="mt-2 flex items-center gap-1 text-[10px] font-bold text-purple-600 uppercase"><Sparkles className="w-3 h-3" /> AI tối ưu mô tả</button>
+                        <textarea placeholder="Mô tả công việc" rows={2} value={exp.description} onChange={(e) => { const newExp = [...activeCV.experience]; newExp[idx].description = e.target.value; updateActiveCV({ experience: newExp }); }} className="w-full px-3 py-2 bg-white border border-gray-200 rounded text-sm resize-none mb-2" />
+                        <button onClick={() => handleAiOptimize('Mô tả kinh nghiệm', exp.description, (val) => { const newExp = [...activeCV.experience]; newExp[idx].description = val; updateActiveCV({ experience: newExp }); })} className="flex items-center gap-1 text-[10px] font-bold text-purple-600 uppercase"><Sparkles className="w-3 h-3" /> AI tối ưu</button>
                       </div>
                     ))}
                   </div>
                 </section>
 
                 <section>
-                  <div className="flex justify-between items-center mb-6">
+                  <div className="flex justify-between items-center mb-5">
                     <h3 className="text-lg font-bold flex items-center gap-2 text-indigo-600"><GraduationCap className="w-5 h-5" /> Học vấn</h3>
                     <button onClick={() => { const newEdu: Education = { id: crypto.randomUUID(), school: '', major: '', year: '' }; updateActiveCV({ education: [...activeCV.education, newEdu] }); }} className="p-1 bg-indigo-100 text-indigo-600 rounded hover:bg-indigo-200"><Plus className="w-5 h-5" /></button>
                   </div>
-                   <div className="space-y-4">
+                  <div className="space-y-3">
                     {activeCV.education.map((edu, idx) => (
-                      <div key={edu.id} className="grid grid-cols-3 gap-4 p-4 border border-gray-100 rounded-xl bg-slate-50 relative group">
-                        <input placeholder="Trường" value={edu.school} onChange={(e) => { const newEdu = [...activeCV.education]; newEdu[idx].school = e.target.value; updateActiveCV({ education: newEdu }); }} className="px-3 py-2 bg-white border border-gray-200 rounded text-sm" />
-                        <input placeholder="Ngành" value={edu.major} onChange={(e) => { const newEdu = [...activeCV.education]; newEdu[idx].major = e.target.value; updateActiveCV({ education: newEdu }); }} className="px-3 py-2 bg-white border border-gray-200 rounded text-sm" />
-                        <input placeholder="Năm" value={edu.year} onChange={(e) => { const newEdu = [...activeCV.education]; newEdu[idx].year = e.target.value; updateActiveCV({ education: newEdu }); }} className="px-3 py-2 bg-white border border-gray-200 rounded text-sm" />
+                      <div key={edu.id} className="grid grid-cols-3 gap-3 p-3 border border-gray-100 rounded-lg bg-slate-50 relative group">
+                        <input placeholder="Trường học" value={edu.school} onChange={(e) => { const newEdu = [...activeCV.education]; newEdu[idx].school = e.target.value; updateActiveCV({ education: newEdu }); }} className="px-3 py-2 bg-white border border-gray-200 rounded text-sm" />
+                        <input placeholder="Ngành học" value={edu.major} onChange={(e) => { const newEdu = [...activeCV.education]; newEdu[idx].major = e.target.value; updateActiveCV({ education: newEdu }); }} className="px-3 py-2 bg-white border border-gray-200 rounded text-sm" />
+                        <input placeholder="Năm tốt nghiệp" value={edu.year} onChange={(e) => { const newEdu = [...activeCV.education]; newEdu[idx].year = e.target.value; updateActiveCV({ education: newEdu }); }} className="px-3 py-2 bg-white border border-gray-200 rounded text-sm" />
                         <button onClick={() => updateActiveCV({ education: activeCV.education.filter(e => e.id !== edu.id) })} className="absolute -top-2 -right-2 bg-red-100 text-red-500 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="w-3 h-3" /></button>
                       </div>
                     ))}
