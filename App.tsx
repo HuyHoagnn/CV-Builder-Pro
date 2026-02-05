@@ -387,7 +387,7 @@ const App: React.FC = () => {
                 </section>
 
                 <section>
-                  <h3 className="text-lg font-bold mb-6 flex items-center gap-2 text-indigo-600"><UserIcon className="w-5 h-5" /> Thông tin liên hệ</h3>
+                  <h3 className="text-lg font-bold mb-6 flex items-center gap-2 text-indigo-600"><UserIcon className="w-5 h-5" /> Thông tin cá nhân</h3>
                   <div className="grid grid-cols-2 gap-6">
                     <div className="col-span-2">
                       <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Họ và tên</label>
@@ -395,11 +395,28 @@ const App: React.FC = () => {
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Email</label>
-                      <input type="email" value={activeCV.personalInfo.email} onChange={(e) => updateActiveCV({ personalInfo: { ...activeCV.personalInfo, email: e.target.value }})} className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg outline-none" />
+                      <input type="email" value={activeCV.personalInfo.email} onChange={(e) => updateActiveCV({ personalInfo: { ...activeCV.personalInfo, email: e.target.value }})} className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500" />
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Số điện thoại</label>
-                      <input type="text" value={activeCV.personalInfo.phone} onChange={(e) => updateActiveCV({ personalInfo: { ...activeCV.personalInfo, phone: e.target.value }})} className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg outline-none" />
+                      <input type="tel" value={activeCV.personalInfo.phone} onChange={(e) => updateActiveCV({ personalInfo: { ...activeCV.personalInfo, phone: e.target.value }})} className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Ngày sinh</label>
+                      <input type="date" value={activeCV.personalInfo.dob} onChange={(e) => updateActiveCV({ personalInfo: { ...activeCV.personalInfo, dob: e.target.value }})} className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Giới tính</label>
+                      <select value={activeCV.personalInfo.gender} onChange={(e) => updateActiveCV({ personalInfo: { ...activeCV.personalInfo, gender: e.target.value }})} className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="">-- Chọn giới tính --</option>
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ">Nữ</option>
+                        <option value="Khác">Khác</option>
+                      </select>
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Địa chỉ</label>
+                      <input type="text" value={activeCV.personalInfo.address} onChange={(e) => updateActiveCV({ personalInfo: { ...activeCV.personalInfo, address: e.target.value }})} placeholder="VD: Hà Nội, Việt Nam" className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500" />
                     </div>
                   </div>
                   <div className="mt-6">
@@ -449,6 +466,31 @@ const App: React.FC = () => {
                     ))}
                   </div>
                 </section>
+
+                <section>
+                  <div className="flex justify-between items-center mb-6">
+                    <h3 className="text-lg font-bold flex items-center gap-2 text-indigo-600"><Sparkles className="w-5 h-5" /> Kỹ năng</h3>
+                    <button onClick={() => {
+                      const newSkill = prompt('Nhập kỹ năng mới:');
+                      if (newSkill && newSkill.trim()) {
+                        updateActiveCV({ skills: [...activeCV.skills, newSkill.trim()] });
+                      }
+                    }} className="p-1 bg-indigo-100 text-indigo-600 rounded hover:bg-indigo-200"><Plus className="w-5 h-5" /></button>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {activeCV.skills.map((skill, idx) => (
+                      <div key={idx} className="inline-flex items-center gap-2 px-3 py-2 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium hover:bg-indigo-200 transition-all group">
+                        {skill}
+                        <button onClick={() => updateActiveCV({ skills: activeCV.skills.filter((_, i) => i !== idx) })} className="opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Trash2 className="w-3 h-3 text-indigo-600 hover:text-red-500" />
+                        </button>
+                      </div>
+                    ))}
+                    {activeCV.skills.length === 0 && (
+                      <p className="text-sm text-gray-400 italic">Chưa thêm kỹ năng nào</p>
+                    )}
+                  </div>
+                </section>
               </div>
             </div>
 
@@ -460,6 +502,7 @@ const App: React.FC = () => {
             </div>
           </div>
         )}
+
       </main>
 
       <style>{`

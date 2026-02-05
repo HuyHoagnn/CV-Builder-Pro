@@ -31,10 +31,14 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
           <p className="text-sm text-gray-600 leading-relaxed max-w-lg">{personalInfo.objective}</p>
         </div>
         <div className="text-right text-sm text-gray-600 flex flex-col gap-1">
-          <p>{personalInfo.email}</p>
-          <p>{personalInfo.phone}</p>
-          <p>{personalInfo.address}</p>
-          <p>{personalInfo.dob} | {personalInfo.gender}</p>
+          {personalInfo.email && <p>{personalInfo.email}</p>}
+          {personalInfo.phone && <p>{personalInfo.phone}</p>}
+          {personalInfo.address && <p>{personalInfo.address}</p>}
+          <p className="text-xs text-gray-500 space-x-1">
+            {personalInfo.dob && <span>{new Date(personalInfo.dob).toLocaleDateString('vi-VN')}</span>}
+            {personalInfo.dob && personalInfo.gender && <span>•</span>}
+            {personalInfo.gender && <span>{personalInfo.gender}</span>}
+          </p>
         </div>
       </div>
 
