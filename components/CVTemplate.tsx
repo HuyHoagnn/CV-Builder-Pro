@@ -453,4 +453,7 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
   // Default: không được chỉ định template
   return (
     <div id={id} className="bg-white p-8 min-h-full cv-preview-container flex flex-col">
-      <p className="text-center text-gray-500">Không có template được chỉ định</p>
+      <p className="text-center text-gray-500">No template selected</p>
+    </div>
+  );
+};
