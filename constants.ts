@@ -2,10 +2,14 @@
 import { Template, User, UserRole, CVData } from './types';
 
 export const INITIAL_TEMPLATES: Template[] = [
-  { id: 't1', name: 'Hiện đại (Modern)', category: 'CV', thumbnail: 'https://picsum.photos/seed/t1/400/600' },
-  { id: 't2', name: 'Cổ điển (Classic)', category: 'CV', thumbnail: 'https://picsum.photos/seed/t2/400/600' },
-  { id: 't3', name: 'Tối giản (Minimalist)', category: 'CV', thumbnail: 'https://picsum.photos/seed/t3/400/600' },
-  { id: 'cl1', name: 'Thư xin việc Thanh lịch', category: 'COVER_LETTER', thumbnail: 'https://picsum.photos/seed/cl1/400/600' },
+  { id: 't1', name: 'Kỹ sư Phần mềm (Tech)', category: 'CV', thumbnail: 'https://picsum.photos/seed/tech/400/600' },
+  { id: 't2', name: 'Quản lý Dự án (PM)', category: 'CV', thumbnail: 'https://picsum.photos/seed/pm/400/600' },
+  { id: 't3', name: 'Tối giản Chuyên nghiệp', category: 'CV', thumbnail: 'https://picsum.photos/seed/minimal/400/600' },
+  { id: 't4', name: 'Sáng tạo Đầy màu sắc', category: 'CV', thumbnail: 'https://picsum.photos/seed/creative/400/600' },
+  { id: 't5', name: 'Kinh doanh Cổ điển', category: 'CV', thumbnail: 'https://picsum.photos/seed/business/400/600' },
+  { id: 't6', name: 'Thiết kế & Marketing', category: 'CV', thumbnail: 'https://picsum.photos/seed/design/400/600' },
+  { id: 'cl1', name: 'Thư xin việc Thanh lịch', category: 'COVER_LETTER', thumbnail: 'https://picsum.photos/seed/letter/400/600' },
+  { id: 'cl2', name: 'Thư xin việc Chuyên nghiệp', category: 'COVER_LETTER', thumbnail: 'https://picsum.photos/seed/letter2/400/600' },
 ];
 
 export const MOCK_USERS: User[] = [

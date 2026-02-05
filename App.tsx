@@ -37,6 +37,7 @@ const App: React.FC = () => {
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(false);
+  const [skillInput, setSkillInput] = useState('');
 
   // Auth States
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
@@ -389,6 +390,38 @@ const App: React.FC = () => {
                 <section>
                   <h3 className="text-lg font-bold mb-6 flex items-center gap-2 text-indigo-600"><UserIcon className="w-5 h-5" /> Thông tin cá nhân</h3>
                   <div className="grid grid-cols-2 gap-6">
+                    {/* Avatar Upload */}
+                    <div className="col-span-2">
+                      <label className="block text-xs font-bold text-gray-500 mb-3 uppercase">Ảnh đại diện</label>
+                      <div className="flex items-center gap-4">
+                        {activeCV.personalInfo.avatar ? (
+                          <img src={activeCV.personalInfo.avatar} alt="Avatar" className="w-20 h-20 rounded-lg object-cover border-2 border-indigo-200" />
+                        ) : (
+                          <div className="w-20 h-20 rounded-lg bg-gradient-to-br from-indigo-200 to-purple-200 flex items-center justify-center">
+                            <UserIcon className="w-10 h-10 text-indigo-600" />
+                          </div>
+                        )}
+                        <div className="flex-1">
+                          <input 
+                            type="file" 
+                            accept="image/*" 
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                  updateActiveCV({ personalInfo: { ...activeCV.personalInfo, avatar: reader.result as string } });
+                                };
+                                reader.readAsDataURL(file);
+                              }
+                            }}
+                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-indigo-100 file:text-indigo-600 hover:file:bg-indigo-200 cursor-pointer"
+                          />
+                          <p className="text-xs text-gray-400 mt-2">JPG, PNG. Tối đa 5MB</p>
+                        </div>
+                      </div>
+                    </div>
+                    
                     <div className="col-span-2">
                       <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Họ và tên</label>
                       <input type="text" value={activeCV.personalInfo.fullName} onChange={(e) => updateActiveCV({ personalInfo: { ...activeCV.personalInfo, fullName: e.target.value }})} className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500" />
@@ -468,21 +501,49 @@ const App: React.FC = () => {
                 </section>
 
                 <section>
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-lg font-bold flex items-center gap-2 text-indigo-600"><Sparkles className="w-5 h-5" /> Kỹ năng</h3>
-                    <button onClick={() => {
-                      const newSkill = prompt('Nhập kỹ năng mới:');
-                      if (newSkill && newSkill.trim()) {
-                        updateActiveCV({ skills: [...activeCV.skills, newSkill.trim()] });
-                      }
-                    }} className="p-1 bg-indigo-100 text-indigo-600 rounded hover:bg-indigo-200"><Plus className="w-5 h-5" /></button>
+                  <h3 className="text-lg font-bold mb-6 flex items-center gap-2 text-indigo-600"><Sparkles className="w-5 h-5" /> Kỹ năng</h3>
+                  
+                  {/* Input field để thêm kỹ năng */}
+                  <div className="flex gap-3 mb-6">
+                    <input 
+                      type="text" 
+                      placeholder="VD: React, JavaScript, Node.js..."
+                      value={skillInput}
+                      onChange={(e) => setSkillInput(e.target.value)}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter' && skillInput.trim()) {
+                          updateActiveCV({ skills: [...activeCV.skills, skillInput.trim()] });
+                          setSkillInput('');
+                        }
+                      }}
+                      className="flex-1 px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                    <button 
+                      onClick={() => {
+                        if (skillInput.trim()) {
+                          updateActiveCV({ skills: [...activeCV.skills, skillInput.trim()] });
+                          setSkillInput('');
+                        }
+                      }}
+                      className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition-all flex items-center gap-2"
+                    >
+                      <Plus className="w-4 h-4" /> Thêm
+                    </button>
                   </div>
-                  <div className="flex flex-wrap gap-3">
+
+                  {/* Hiển thị kỹ năng dưới dạng tags */}
+                  <div className="flex flex-wrap gap-2">
                     {activeCV.skills.map((skill, idx) => (
-                      <div key={idx} className="inline-flex items-center gap-2 px-3 py-2 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium hover:bg-indigo-200 transition-all group">
+                      <div 
+                        key={idx} 
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium hover:bg-indigo-200 transition-all group"
+                      >
                         {skill}
-                        <button onClick={() => updateActiveCV({ skills: activeCV.skills.filter((_, i) => i !== idx) })} className="opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Trash2 className="w-3 h-3 text-indigo-600 hover:text-red-500" />
+                        <button 
+                          onClick={() => updateActiveCV({ skills: activeCV.skills.filter((_, i) => i !== idx) })} 
+                          className="opacity-0 group-hover:opacity-100 transition-opacity ml-1"
+                        >
+                          <Trash2 className="w-3 h-3 cursor-pointer hover:text-red-500" />
                         </button>
                       </div>
                     ))}
