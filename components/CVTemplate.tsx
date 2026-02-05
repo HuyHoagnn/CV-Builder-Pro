@@ -103,8 +103,8 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
               )}
             </div>
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-emerald-900 letter-spacing-wide">{personalInfo.fullName}</h1>
-              <p className="text-xs text-emerald-800 font-semibold uppercase letter-spacing-widest">Mục Tiêu Nghề Nghiệp</p>
+              <h1 className="text-3xl font-bold text-emerald-900" style={{ letterSpacing: '0.025em' }}>{personalInfo.fullName}</h1>
+              <p className="text-xs text-emerald-800 font-semibold uppercase" style={{ letterSpacing: '0.05em' }}>Mục Tiêu Nghề Nghiệp</p>
               <p className="text-xs text-gray-800 leading-snug mt-1 italic">{personalInfo.objective}</p>
             </div>
           </div>
@@ -445,6 +445,97 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
               </div>
             )}
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Template CL1: Thư xin việc Thanh lịch (Elegant Cover Letter)
+  if (templateId === 'cl1') {
+    return (
+      <div id={id} className="bg-white p-12 min-h-full cv-preview-container flex flex-col cv-print-content">
+        <div className="mb-8">
+          <p className="text-xs text-gray-500 uppercase tracking-widest">Thư xin việc</p>
+          <h1 className="text-3xl font-bold text-gray-900 mt-2">{personalInfo.fullName}</h1>
+          <div className="w-12 h-1 bg-indigo-600 mt-2"></div>
+        </div>
+
+        <div className="flex-1 mb-8">
+          <p className="text-xs text-gray-600 mb-4">Kính gửi Nhà tuyển dụng,</p>
+          <p className="text-xs leading-relaxed text-gray-800 mb-4">
+            {personalInfo.objective || 'Tôi rất hào hứng khi nộp đơn ứng tuyển cho vị trí này. Với kinh nghiệm và kỹ năng của mình, tôi tin rằng có thể đóng góp giá trị cho tổ chức của bạn.'}
+          </p>
+          
+          {experience.length > 0 && (
+            <div className="mb-4">
+              <p className="text-xs text-gray-800 mb-2"><strong>Kinh Nghiệm Chính:</strong></p>
+              <ul className="text-xs text-gray-800 space-y-1">
+                {experience.slice(0, 2).map(exp => (
+                  <li key={exp.id} className="before:content-['•'] before:mr-2">At {exp.company} as {exp.position}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          
+          {skills.length > 0 && (
+            <div className="mb-4">
+              <p className="text-xs text-gray-800 mb-2"><strong>Kỹ Năng Nổi Bật:</strong></p>
+              <p className="text-xs text-gray-800">{skills.slice(0, 5).join(', ')}</p>
+            </div>
+          )}
+
+          <p className="text-xs text-gray-800">Tôi rất mong muốn được gặp gỡ và thảo luận thêm về cơ hội này.</p>
+        </div>
+
+        <div className="border-t border-gray-300 pt-4">
+          <p className="text-xs text-gray-800 mb-1">Trân trọng,</p>
+          <p className="text-xs font-semibold text-gray-900 mt-4">{personalInfo.fullName}</p>
+          <p className="text-xs text-gray-600 mt-1">{personalInfo.email} | {personalInfo.phone}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Template CL2: Thư xin việc Chuyên nghiệp (Professional Cover Letter)
+  if (templateId === 'cl2') {
+    return (
+      <div id={id} className="bg-slate-900 text-white p-10 min-h-full cv-preview-container flex flex-col cv-print-content">
+        <div className="mb-8 border-b-2 border-indigo-600 pb-6">
+          <p className="text-xs text-indigo-300 uppercase tracking-widest">Cover Letter</p>
+          <h1 className="text-3xl font-black text-white mt-2">{personalInfo.fullName}</h1>
+          <p className="text-xs text-gray-300 mt-3">{personalInfo.email} • {personalInfo.phone} • {personalInfo.address}</p>
+        </div>
+
+        <div className="flex-1">
+          <p className="text-xs text-gray-300 mb-4">Dear Hiring Manager,</p>
+          <p className="text-xs leading-relaxed text-gray-300 mb-4">
+            {personalInfo.objective || 'I am writing to express my strong interest in the position. With my proven track record and expertise, I am confident in my ability to deliver exceptional results for your organization.'}
+          </p>
+          
+          {experience.length > 0 && (
+            <div className="mb-4 bg-slate-800 p-3 rounded">
+              <p className="text-xs font-bold text-indigo-300 mb-2">Professional Background:</p>
+              {experience.slice(0, 2).map(exp => (
+                <p key={exp.id} className="text-xs text-gray-300 mb-1">
+                  <strong>{exp.position}</strong> at {exp.company} ({exp.startDate} - {exp.endDate})
+                </p>
+              ))}
+            </div>
+          )}
+          
+          {skills.length > 0 && (
+            <div className="mb-4">
+              <p className="text-xs font-bold text-indigo-300 mb-2">Key Competencies:</p>
+              <p className="text-xs text-gray-300">{skills.slice(0, 6).join(' • ')}</p>
+            </div>
+          )}
+
+          <p className="text-xs text-gray-300 mt-6">I would welcome the opportunity to discuss how I can contribute to your team.</p>
+        </div>
+
+        <div className="mt-8">
+          <p className="text-xs text-gray-300 mb-4">Sincerely,</p>
+          <p className="text-white font-bold text-sm">{personalInfo.fullName}</p>
         </div>
       </div>
     );

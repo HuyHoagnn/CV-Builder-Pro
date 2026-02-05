@@ -94,6 +94,21 @@ button, input, textarea, select {
   transition: all 0.3s ease-in-out;
 }
 
+/* Letter spacing utility classes for better PDF rendering */
+.letter-spacing-wide {
+  letter-spacing: 0.025em;
+}
+
+.letter-spacing-widest {
+  letter-spacing: 0.05em;
+}
+
+/* PDF export styles */
+.cv-print-content {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  line-height: 1.4;
+}
+
 /* Focus styles for accessibility */
 button:focus-visible,
 a:focus-visible,

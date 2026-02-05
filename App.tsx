@@ -236,13 +236,33 @@ const App: React.FC = () => {
 
   const exportPDF = async () => {
     if (!cvPrintRef.current) return;
-    const canvas = await html2canvas(cvPrintRef.current, { scale: 2 });
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new (window as any).jspdf.jsPDF('p', 'mm', 'a4');
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save(`${activeCV?.title || 'CV'}.pdf`);
+    try {
+      const element = cvPrintRef.current;
+      // Set background color explicitly for export
+      const originalBg = element.style.backgroundColor;
+      element.style.backgroundColor = '#ffffff';
+      
+      const canvas = await html2canvas(element, { 
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff',
+        allowTaint: true,
+        imageTimeout: 0
+      });
+      
+      element.style.backgroundColor = originalBg;
+      
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new (window as any).jspdf.jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`${activeCV?.title || 'CV'}.pdf`);
+    } catch (error) {
+      console.error('Export PDF error:', error);
+      alert('Lỗi khi xuất PDF. Vui lòng thử lại.');
+    }
   };
 
   if (view === 'login' || isLoadingData) {
