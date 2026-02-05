@@ -22,7 +22,7 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
   const theme = getStyles();
 
   return (
-    <div id={id} className="bg-white p-12 shadow-inner min-h-full cv-preview-container flex flex-col font-serif">
+    <div id={id} className="bg-white p-12 shadow-inner min-h-full cv-preview-container flex flex-col">
       {/* Header */}
       <div className="flex justify-between items-start border-b-2 pb-6" style={{ borderColor: theme.text }}>
         <div className="flex-1">
