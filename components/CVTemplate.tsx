@@ -17,68 +17,82 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
   // Template 1: Hiện Đại (Modern Tech Style)
   if (templateId === 't1') {
     return (
-      <div id={id} className="bg-gradient-to-br from-indigo-50 to-white p-8 min-h-full cv-preview-container flex flex-col" style={baseStyle}>
-        <div className="flex gap-6 mb-5">
+      <div id={id} className="bg-white p-8 min-h-full cv-preview-container flex flex-col" style={baseStyle}>
+        {/* Header */}
+        <div className="flex gap-6 pb-6 border-b-2 border-indigo-600">
           <div className="flex-shrink-0">
             {personalInfo.avatar ? (
-              <img src={personalInfo.avatar} alt="Avatar" className="w-24 h-24 rounded-xl object-cover border-4 border-indigo-300 shadow-lg" />
+              <img src={personalInfo.avatar} alt="Avatar" className="w-28 h-28 rounded-lg object-cover border-4 border-indigo-200" />
             ) : (
-              <div className="w-24 h-24 rounded-xl flex items-center justify-center text-2xl font-bold text-white bg-gradient-to-br from-indigo-600 to-indigo-800 shadow-lg">
+              <div className="w-28 h-28 rounded-lg flex items-center justify-center text-3xl font-bold text-white bg-indigo-600">
                 {personalInfo.fullName.charAt(0).toUpperCase()}
               </div>
             )}
           </div>
           <div className="flex-1">
-            <h1 className="text-4xl font-black text-indigo-900 mb-1">{personalInfo.fullName}</h1>
-            <div className="inline-block bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-bold mb-2">Mục Tiêu Nghề Nghiệp</div>
-            <p className="text-xs text-gray-700 leading-snug mb-2">{personalInfo.objective}</p>
-            <div className="flex flex-wrap gap-2 text-xs text-gray-600">
-              {personalInfo.email && <span className="bg-indigo-100 px-2 py-1 rounded">📧 {personalInfo.email}</span>}
-              {personalInfo.phone && <span className="bg-indigo-100 px-2 py-1 rounded">📱 {personalInfo.phone}</span>}
-              {personalInfo.address && <span className="bg-indigo-100 px-2 py-1 rounded">📍 {personalInfo.address}</span>}
+            <h1 className="text-4xl font-black text-gray-900 mb-2">{personalInfo.fullName}</h1>
+            <div className="mb-3">
+              <p className="text-sm text-indigo-600 font-semibold uppercase tracking-wide">Mục Tiêu Nghề Nghiệp</p>
+              <p className="text-xs text-gray-700 leading-relaxed mt-1">{personalInfo.objective}</p>
+            </div>
+            <div className="flex flex-wrap gap-3 text-xs text-gray-700">
+              {personalInfo.email && <span className="flex items-center gap-1">📧 {personalInfo.email}</span>}
+              {personalInfo.phone && <span className="flex items-center gap-1">📱 {personalInfo.phone}</span>}
+              {personalInfo.address && <span className="flex items-center gap-1">📍 {personalInfo.address}</span>}
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-5 flex-1">
-          <div className="col-span-2 flex flex-col gap-4">
+        {/* Content */}
+        <div className="grid grid-cols-3 gap-6 flex-1 mt-6">
+          <div className="col-span-2 flex flex-col gap-6">
+            {/* Experience */}
             {experience.length > 0 && (
-              <div className="bg-white p-4 rounded-lg border-l-4 border-indigo-600 shadow-sm">
-                <h2 className="text-xs font-black uppercase text-indigo-900 mb-3 bg-indigo-100 p-2 rounded">Kinh Nghiệm</h2>
-                {experience.map(exp => (
-                  <div key={exp.id} className="mb-2 pb-2 border-b border-gray-200 last:border-0">
-                    <div className="flex justify-between">
-                      <h3 className="font-bold text-xs text-gray-900">{exp.position}</h3>
-                      <span className="text-xs text-indigo-600">{exp.startDate} - {exp.endDate}</span>
+              <div>
+                <h2 className="text-sm font-black uppercase text-gray-900 mb-4 pb-2 border-b-2 border-indigo-600">💼 Kinh Nghiệm Làm Việc</h2>
+                <div className="space-y-4">
+                  {experience.map(exp => (
+                    <div key={exp.id} className="bg-gray-50 p-4 rounded-lg">
+                      <div className="flex justify-between items-start mb-1">
+                        <h3 className="font-bold text-xs text-gray-900">{exp.position}</h3>
+                        <span className="text-xs text-indigo-600 font-semibold">{exp.startDate} → {exp.endDate}</span>
+                      </div>
+                      <p className="text-xs text-indigo-700 font-semibold mb-2">{exp.company}</p>
+                      <p className="text-xs text-gray-700 leading-relaxed">{exp.description}</p>
                     </div>
-                    <p className="text-xs text-indigo-700 font-semibold">{exp.company}</p>
-                    <p className="text-xs text-gray-700 leading-snug mt-1">{exp.description}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
+
+            {/* Education */}
             {education.length > 0 && (
-              <div className="bg-white p-4 rounded-lg border-l-4 border-indigo-600 shadow-sm">
-                <h2 className="text-xs font-black uppercase text-indigo-900 mb-3 bg-indigo-100 p-2 rounded">Học Vấn</h2>
-                {education.map(edu => (
-                  <div key={edu.id} className="mb-2 pb-2 border-b border-gray-200 last:border-0">
-                    <div className="flex justify-between">
-                      <h3 className="font-bold text-xs text-gray-900">{edu.school}</h3>
-                      <span className="text-xs text-indigo-600">{edu.year}</span>
+              <div>
+                <h2 className="text-sm font-black uppercase text-gray-900 mb-4 pb-2 border-b-2 border-indigo-600">🎓 Học Vấn</h2>
+                <div className="space-y-3">
+                  {education.map(edu => (
+                    <div key={edu.id} className="bg-gray-50 p-3 rounded-lg">
+                      <div className="flex justify-between items-start mb-1">
+                        <h3 className="font-bold text-xs text-gray-900">{edu.school}</h3>
+                        <span className="text-xs text-gray-600">{edu.year}</span>
+                      </div>
+                      <p className="text-xs text-gray-700">{edu.major}</p>
                     </div>
-                    <p className="text-xs text-gray-700">{edu.major}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
           </div>
-          <div className="col-span-1">
+
+          {/* Sidebar */}
+          <div>
+            {/* Skills */}
             {skills.length > 0 && (
-              <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 text-white p-4 rounded-lg shadow-lg">
-                <h2 className="text-xs font-black uppercase mb-3">Kỹ Năng</h2>
+              <div className="bg-indigo-50 p-4 rounded-lg">
+                <h2 className="text-sm font-black uppercase text-indigo-900 mb-4 pb-2 border-b-2 border-indigo-600">⭐ Kỹ Năng</h2>
                 <div className="flex flex-wrap gap-2">
                   {skills.map((skill, idx) => (
-                    <span key={idx} className="bg-white text-indigo-700 px-2 py-1 text-xs font-bold rounded-full">
+                    <span key={idx} className="bg-indigo-600 text-white px-3 py-1 text-xs font-bold rounded-full">
                       {skill}
                     </span>
                   ))}
@@ -94,25 +108,26 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
   // Template 2: Cổ Điển (Classic)
   if (templateId === 't2') {
     return (
-      <div id={id} className="bg-white p-9 min-h-full cv-preview-container flex flex-col" style={baseStyle}>
-        <div className="border-b-4 border-emerald-800 pb-4 mb-5">
-          <div className="flex gap-6">
+      <div id={id} className="bg-white p-10 min-h-full cv-preview-container flex flex-col" style={baseStyle}>
+        {/* Header */}
+        <div className="border-b-4 border-gray-900 pb-5 mb-6">
+          <div className="flex gap-6 mb-3">
             <div>
               {personalInfo.avatar ? (
-                <img src={personalInfo.avatar} alt="Avatar" className="w-20 h-20 object-cover border-2 border-emerald-800" />
+                <img src={personalInfo.avatar} alt="Avatar" className="w-24 h-24 object-cover rounded border-2 border-gray-400" />
               ) : (
-                <div className="w-20 h-20 flex items-center justify-center text-2xl font-bold text-white bg-emerald-800">
+                <div className="w-24 h-24 flex items-center justify-center text-2xl font-bold text-white bg-gray-800 rounded">
                   {personalInfo.fullName.charAt(0).toUpperCase()}
                 </div>
               )}
             </div>
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-emerald-900" style={{ letterSpacing: '0.025em' }}>{personalInfo.fullName}</h1>
-              <p className="text-xs text-emerald-800 font-semibold uppercase" style={{ letterSpacing: '0.05em' }}>Mục Tiêu Nghề Nghiệp</p>
-              <p className="text-xs text-gray-800 leading-snug mt-1 italic">{personalInfo.objective}</p>
+              <h1 className="text-3xl font-bold text-gray-900">{personalInfo.fullName}</h1>
+              <p className="text-sm text-gray-600 font-semibold uppercase mt-1">Mục Tiêu Nghề Nghiệp</p>
+              <p className="text-xs text-gray-700 leading-relaxed mt-2">{personalInfo.objective}</p>
             </div>
           </div>
-          <div className="flex gap-4 text-xs text-gray-700 mt-3 border-t border-emerald-200 pt-2">
+          <div className="flex gap-4 text-xs text-gray-700 pt-3 border-t border-gray-300">
             {personalInfo.email && <span>{personalInfo.email}</span>}
             {personalInfo.phone && <span>•</span>}
             {personalInfo.phone && <span>{personalInfo.phone}</span>}
@@ -121,47 +136,57 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
           </div>
         </div>
 
+        {/* Content */}
         <div className="grid grid-cols-3 gap-6 flex-1">
           <div className="col-span-2">
+            {/* Experience */}
             {experience.length > 0 && (
-              <div className="mb-5">
-                <h2 className="text-xs font-bold uppercase border-b-2 border-emerald-800 pb-1 mb-3 text-emerald-900">Kinh Nghiệm Làm Việc</h2>
-                {experience.map(exp => (
-                  <div key={exp.id} className="mb-3">
-                    <div className="flex justify-between">
-                      <div>
+              <div className="mb-6">
+                <h2 className="text-xs font-bold uppercase border-b-3 border-gray-900 pb-2 mb-4 text-gray-900">Kinh Nghiệm Làm Việc</h2>
+                <div className="space-y-3">
+                  {experience.map(exp => (
+                    <div key={exp.id}>
+                      <div className="flex justify-between mb-1">
                         <p className="text-xs font-bold text-gray-900">{exp.position}</p>
-                        <p className="text-xs text-emerald-800 font-semibold italic">{exp.company}</p>
+                        <span className="text-xs text-gray-600 italic">{exp.startDate} - {exp.endDate}</span>
                       </div>
-                      <span className="text-xs text-gray-600">{exp.startDate} - {exp.endDate}</span>
+                      <p className="text-xs text-gray-700 font-semibold">{exp.company}</p>
+                      <p className="text-xs text-gray-700 leading-relaxed mt-0.5">{exp.description}</p>
                     </div>
-                    <p className="text-xs text-gray-800 leading-snug mt-0.5">{exp.description}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
+
+            {/* Education */}
             {education.length > 0 && (
               <div>
-                <h2 className="text-xs font-bold uppercase border-b-2 border-emerald-800 pb-1 mb-3 text-emerald-900">Học Vấn</h2>
-                {education.map(edu => (
-                  <div key={edu.id} className="mb-2.5">
-                    <div className="flex justify-between">
-                      <p className="text-xs font-bold text-gray-900">{edu.school}</p>
-                      <span className="text-xs text-gray-600">{edu.year}</span>
+                <h2 className="text-xs font-bold uppercase border-b-3 border-gray-900 pb-2 mb-4 text-gray-900">Học Vấn</h2>
+                <div className="space-y-2">
+                  {education.map(edu => (
+                    <div key={edu.id}>
+                      <div className="flex justify-between mb-0.5">
+                        <p className="text-xs font-bold text-gray-900">{edu.school}</p>
+                        <span className="text-xs text-gray-600">{edu.year}</span>
+                      </div>
+                      <p className="text-xs text-gray-700">{edu.major}</p>
                     </div>
-                    <p className="text-xs text-gray-800">{edu.major}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
           </div>
+
+          {/* Sidebar */}
           <div>
+            {/* Skills */}
             {skills.length > 0 && (
               <div>
-                <h2 className="text-xs font-bold uppercase border-b-2 border-emerald-800 pb-1 mb-3 text-emerald-900">Kỹ Năng</h2>
+                <h2 className="text-xs font-bold uppercase border-b-3 border-gray-900 pb-2 mb-3 text-gray-900">Kỹ Năng</h2>
                 <div className="flex flex-col gap-1">
                   {skills.map((skill, idx) => (
-                    <span key={idx} className="text-xs text-gray-800 before:content-['▪'] before:mr-2 before:text-emerald-800">
+                    <span key={idx} className="text-xs text-gray-700 flex items-center gap-1">
+                      <span className="w-1 h-1 bg-gray-900 rounded-full"></span>
                       {skill}
                     </span>
                   ))}
@@ -177,53 +202,65 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
   // Template 3: Tối Giản (Minimalist)
   if (templateId === 't3') {
     return (
-      <div id={id} className="bg-white p-8 min-h-full cv-preview-container flex flex-col" style={baseStyle}>
-        <div className="border-b border-gray-400 pb-4 mb-5">
-          <h1 className="text-3xl font-bold text-gray-900">{personalInfo.fullName}</h1>
-          <p className="text-xs text-gray-700 mt-1">{personalInfo.objective}</p>
-          <div className="flex gap-4 text-xs text-gray-700 mt-2">
+      <div id={id} className="bg-white p-10 min-h-full cv-preview-container flex flex-col" style={baseStyle}>
+        {/* Header */}
+        <div className="pb-6 mb-6 border-b border-gray-500">
+          <h1 className="text-3xl font-bold text-gray-900 mb-3">{personalInfo.fullName}</h1>
+          <p className="text-xs text-gray-700 leading-relaxed mb-3">{personalInfo.objective}</p>
+          <div className="flex gap-4 text-xs text-gray-700">
             {personalInfo.email && <span>{personalInfo.email}</span>}
-            {personalInfo.phone && <span>|</span>}
+            {personalInfo.phone && <span>•</span>}
             {personalInfo.phone && <span>{personalInfo.phone}</span>}
-            {personalInfo.address && <span>|</span>}
+            {personalInfo.address && <span>•</span>}
             {personalInfo.address && <span>{personalInfo.address}</span>}
           </div>
         </div>
 
+        {/* Content */}
         <div className="grid grid-cols-3 gap-6 flex-1">
           <div className="col-span-2">
+            {/* Experience */}
             {experience.length > 0 && (
-              <div className="mb-4">
-                <h2 className="text-xs font-bold uppercase text-gray-900 mb-2.5">Kinh Nghiệm</h2>
-                {experience.map(exp => (
-                  <div key={exp.id} className="mb-2.5">
-                    <div className="flex justify-between">
-                      <p className="text-xs font-bold text-gray-900">{exp.position}</p>
-                      <span className="text-xs text-gray-600">{exp.startDate} - {exp.endDate}</span>
+              <div className="mb-6">
+                <h2 className="text-xs font-bold uppercase text-gray-900 mb-4">Kinh Nghiệm</h2>
+                <div className="space-y-3">
+                  {experience.map(exp => (
+                    <div key={exp.id}>
+                      <div className="flex justify-between mb-1">
+                        <p className="text-xs font-bold text-gray-900">{exp.position}</p>
+                        <span className="text-xs text-gray-600">{exp.startDate} - {exp.endDate}</span>
+                      </div>
+                      <p className="text-xs text-gray-700 font-semibold mb-1">{exp.company}</p>
+                      <p className="text-xs text-gray-700 leading-relaxed">{exp.description}</p>
                     </div>
-                    <p className="text-xs text-gray-700">{exp.company}</p>
-                    <p className="text-xs text-gray-700 leading-snug">{exp.description}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
+
+            {/* Education */}
             {education.length > 0 && (
               <div>
-                <h2 className="text-xs font-bold uppercase text-gray-900 mb-2.5">Học Vấn</h2>
-                {education.map(edu => (
-                  <div key={edu.id} className="mb-2">
-                    <p className="text-xs font-bold text-gray-900">{edu.school}</p>
-                    <p className="text-xs text-gray-700">{edu.major} ({edu.year})</p>
-                  </div>
-                ))}
+                <h2 className="text-xs font-bold uppercase text-gray-900 mb-4">Học Vấn</h2>
+                <div className="space-y-2">
+                  {education.map(edu => (
+                    <div key={edu.id}>
+                      <p className="text-xs font-bold text-gray-900">{edu.school}</p>
+                      <p className="text-xs text-gray-700">{edu.major} ({edu.year})</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
+
+          {/* Sidebar */}
           <div>
+            {/* Skills */}
             {skills.length > 0 && (
               <div>
-                <h2 className="text-xs font-bold uppercase text-gray-900 mb-2.5">Kỹ Năng</h2>
-                <div className="flex flex-col gap-1">
+                <h2 className="text-xs font-bold uppercase text-gray-900 mb-4">Kỹ Năng</h2>
+                <div className="space-y-1">
                   {skills.map((skill, idx) => (
                     <p key={idx} className="text-xs text-gray-700">{skill}</p>
                   ))}

@@ -227,46 +227,67 @@ const App: React.FC = () => {
   }, [activeCV]);
 
   const handleAiOptimize = async (field: string, currentVal: string, setter: (val: string) => void) => {
-    if (!currentVal) return;
+    if (!currentVal) {
+      alert('Vui lòng nhập nội dung trước khi tối ưu');
+      return;
+    }
     setIsAiLoading(true);
-    const optimized = await optimizeCVContent(currentVal, field);
-    setter(optimized);
-    setIsAiLoading(false);
+    try {
+      const optimized = await optimizeCVContent(currentVal, field);
+      setter(optimized);
+      alert('✅ Tối ưu thành công! Nội dung đã được cập nhật.');
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Lỗi không xác định';
+      console.error('AI Optimize Error:', errorMsg);
+      alert(`❌ Lỗi tối ưu: ${errorMsg}\n\nVui lòng kiểm tra API key trong .env.local`);
+    } finally {
+      setIsAiLoading(false);
+    }
   };
 
   const exportPDF = async () => {
     if (!cvPrintRef.current) return;
     try {
       const element = cvPrintRef.current;
+      // Wait for fonts to load
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
       // Set background color explicitly for export
       const originalBg = element.style.backgroundColor;
       element.style.backgroundColor = '#ffffff';
       
       const canvas = await html2canvas(element, { 
-        scale: 2,
+        scale: 3,
         useCORS: true,
-        logging: false,
+        logging: true,
         backgroundColor: '#ffffff',
         allowTaint: true,
-        imageTimeout: 0,
+        imageTimeout: 5000,
         letterRendering: true,
         windowHeight: element.scrollHeight,
-        windowWidth: element.scrollWidth
+        windowWidth: element.scrollWidth,
+        onclone: (cloned) => {
+          // Ensure fonts are applied in cloned element
+          const allElements = cloned.querySelectorAll('*');
+          allElements.forEach((el: any) => {
+            el.style.fontFamily = "'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Arial', sans-serif";
+          });
+        }
       });
       
       element.style.backgroundColor = originalBg;
       
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL('image/png', 0.95);
       const pdf = new (window as any).jspdf.jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
       
-      // Handle multiple pages if content is longer than one page
-      let heightLeft = pdfHeight;
-      let position = 0;
+      // Add image to PDF
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
-      heightLeft -= pdf.internal.pageSize.getHeight();
+      // Handle multiple pages if content is longer than one page
+      let heightLeft = pdfHeight - pdf.internal.pageSize.getHeight();
+      let position = 0;
       
       while (heightLeft > 0) {
         position = heightLeft - pdfHeight;
@@ -276,9 +297,10 @@ const App: React.FC = () => {
       }
       
       pdf.save(`${activeCV?.title || 'CV'}.pdf`);
+      alert('✅ Xuất PDF thành công!');
     } catch (error) {
       console.error('Export PDF error:', error);
-      alert('Lỗi khi xuất PDF. Vui lòng thử lại.');
+      alert('❌ Lỗi khi xuất PDF. Vui lòng thử lại.');
     }
   };
 
