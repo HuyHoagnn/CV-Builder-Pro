@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { User, UserRole } from '../types';
-import { Layout, FileText, Settings, LogOut, PieChart, Users } from 'lucide-react';
+import { Layout, FileText, Settings, LogOut, Users } from 'lucide-react';
 
 interface NavigationProps {
   user: User | null;

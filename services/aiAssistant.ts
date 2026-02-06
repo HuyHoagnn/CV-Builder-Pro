@@ -197,33 +197,3 @@ JSON:`;
   if (!jsonMatch) throw new Error("❌ Không tìm thấy JSON");
   return JSON.parse(jsonMatch[0]);
 };
-
-// 6. Generate job-specific resume bullet points
-export const generateBulletPoints = async (jobTitle: string, companyType: string, keyAchievements: string): Promise<string[]> => {
-  const prompt = `Tạo 5-7 bullet point chuyên nghiệp cho CV:
-
-Vị trí: ${jobTitle}
-Loại công ty: ${companyType}
-Thành tựu chính: ${keyAchievements}
-
-Yêu cầu:
-- Bắt đầu bằng động từ hành động mạnh (Developed, Led, Increased, v.v.)
-- Bao gồm con số, %, hoặc kết quả cụ thể
-- Rõ ràng và đầy cá nhân
-- Tiếng Việt
-- Mỗi bullet 1-2 dòng
-
-Trả về danh sách:
-- Bullet point 1
-- Bullet point 2
-...
-
-Bullet points:`;
-
-  const result = await callGeminiAPI(prompt, 800);
-  return result
-    .split('\n')
-    .filter((line) => line.trim().startsWith('-'))
-    .map((line) => line.replace(/^-\s*/, '').trim())
-    .filter((line) => line.length > 0);
-};
