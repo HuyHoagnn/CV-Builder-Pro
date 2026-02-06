@@ -335,11 +335,10 @@ const App: React.FC = () => {
       const canvas = await html2canvas(element, { 
         scale: 3,
         useCORS: true,
-        logging: true,
+        logging: false,
         backgroundColor: '#ffffff',
         allowTaint: true,
         imageTimeout: 5000,
-        letterRendering: true,
         windowHeight: element.scrollHeight,
         windowWidth: element.scrollWidth,
         onclone: (cloned) => {

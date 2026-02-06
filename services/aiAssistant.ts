@@ -4,10 +4,10 @@
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
-// Helper to call Gemini API
+// Helper to call Gemini API with fallback
 const callGeminiAPI = async (prompt: string, maxTokens: number = 2048): Promise<string> => {
   if (!apiKey?.trim()) {
-    throw new Error("❌ Gemini API Key không được cấu hình. Kiểm tra .env.local");
+    throw new Error("⚠️ Gemini API Key không được cấu hình. Vui lòng thêm VITE_GEMINI_API_KEY vào .env.local");
   }
 
   try {
@@ -27,7 +27,12 @@ const callGeminiAPI = async (prompt: string, maxTokens: number = 2048): Promise<
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error?.message || response.statusText);
+      const errorMsg = errorData.error?.message || response.statusText;
+      
+      // Handle quota exceeded or API errors gracefully
+      if (errorMsg.includes("RESOURCE_EXHAUSTED") || errorMsg.includes("quota")) {
+        throw new Error("⚠️ Hết quota/token Gemini API. Vui lòng chờ hoặc nâng cấp API plan");\n      }
+      throw new Error(errorMsg);
     }
 
     const data = await response.json();
@@ -38,6 +43,7 @@ const callGeminiAPI = async (prompt: string, maxTokens: number = 2048): Promise<
     console.error("[AI Error]:", error);
     throw error;
   }
+};
 };
 
 // 1. Optimize existing CV content
