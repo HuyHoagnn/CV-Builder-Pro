@@ -31,7 +31,8 @@ const callGeminiAPI = async (prompt: string, maxTokens: number = 2048): Promise<
       
       // Handle quota exceeded or API errors gracefully
       if (errorMsg.includes("RESOURCE_EXHAUSTED") || errorMsg.includes("quota")) {
-        throw new Error("⚠️ Hết quota/token Gemini API. Vui lòng chờ hoặc nâng cấp API plan");\n      }
+        throw new Error("⚠️ Hết quota/token Gemini API. Vui lòng chờ hoặc nâng cấp API plan");
+      }
       throw new Error(errorMsg);
     }
 
@@ -43,7 +44,6 @@ const callGeminiAPI = async (prompt: string, maxTokens: number = 2048): Promise<
     console.error("[AI Error]:", error);
     throw error;
   }
-};
 };
 
 // 1. Optimize existing CV content
