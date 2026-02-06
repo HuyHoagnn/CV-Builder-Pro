@@ -5,7 +5,13 @@ import { INITIAL_TEMPLATES } from './constants';
 import { Navigation } from './components/Navigation';
 import { CVTemplate } from './components/CVTemplate';
 import { AdminDashboard } from './components/AdminDashboard';
-import { optimizeCVContent } from './services/aiAssistant';
+import { 
+  optimizeCVContent,
+  generateCVFromInfo,
+  suggestCVImprovements,
+  generateCoverLetter,
+  analyzeCVQuality
+} from './services/aiAssistant';
 import { supabase, db } from './services/supabase';
 import html2canvas from 'html2canvas';
 import { 
@@ -38,6 +44,13 @@ const App: React.FC = () => {
   const [isSyncing, setIsSyncing] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [skillInput, setSkillInput] = useState('');
+  
+  // AI Generative States
+  const [showAIGenerative, setShowAIGenerative] = useState(false);
+  const [aiGenerativeLoading, setAiGenerativeLoading] = useState(false);
+  const [cvSuggestions, setCvSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [aiAnalysisScore, setAiAnalysisScore] = useState<any>(null);
 
   // Auth States
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
@@ -242,6 +255,69 @@ const App: React.FC = () => {
       alert(`❌ Lỗi tối ưu: ${errorMsg}\n\nVui lòng kiểm tra API key trong .env.local`);
     } finally {
       setIsAiLoading(false);
+    }
+  };
+
+  // Tạo CV từ thông tin cơ bản sử dụng AI
+  const handleGenerateCVWithAI = async (fullName: string, jobTitle: string, yearsExp: string, currentRole: string, skills: string) => {
+    setAiGenerativeLoading(true);
+    try {
+      const cvData = await generateCVFromInfo(fullName, jobTitle, yearsExp, currentRole, skills);
+      if (activeCV) {
+        const updatedCV = {
+          ...activeCV,
+          personalInfo: {
+            ...activeCV.personalInfo,
+            objective: cvData.objective
+          },
+          experience: cvData.experience.map((exp: any, idx: number) => ({
+            id: crypto.randomUUID(),
+            ...exp
+          })),
+          skills: cvData.skills
+        };
+        setActiveCV(updatedCV);
+        await syncCVToCloud(updatedCV);
+        alert('✅ CV được tạo bởi AI thành công!');
+      }
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Lỗi không xác định';
+      alert(`❌ Lỗi: ${errorMsg}`);
+    } finally {
+      setAiGenerativeLoading(false);
+    }
+  };
+
+  // Gợi ý cải thiện CV
+  const handleSuggestImprovements = async () => {
+    if (!activeCV) return;
+    setAiGenerativeLoading(true);
+    try {
+      const cvText = JSON.stringify(activeCV);
+      const suggestions = await suggestCVImprovements(cvText);
+      setCvSuggestions(suggestions);
+      setShowSuggestions(true);
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Lỗi không xác định';
+      alert(`❌ Lỗi: ${errorMsg}`);
+    } finally {
+      setAiGenerativeLoading(false);
+    }
+  };
+
+  // Phân tích chất lượng CV
+  const handleAnalyzeCVQuality = async () => {
+    if (!activeCV) return;
+    setAiGenerativeLoading(true);
+    try {
+      const cvText = JSON.stringify(activeCV);
+      const analysis = await analyzeCVQuality(cvText);
+      setAiAnalysisScore(analysis);
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Lỗi không xác định';
+      alert(`❌ Lỗi: ${errorMsg}`);
+    } finally {
+      setAiGenerativeLoading(false);
     }
   };
 
