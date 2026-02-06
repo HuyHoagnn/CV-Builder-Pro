@@ -10,10 +10,14 @@ interface CVTemplateProps {
 export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
   const { personalInfo, experience, education, skills, templateId } = data;
 
+  const baseStyle = {
+    fontFamily: "'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Arial', sans-serif",
+  };
+
   // Template 1: Hiện Đại (Modern Tech Style)
   if (templateId === 't1') {
     return (
-      <div id={id} className="bg-gradient-to-br from-indigo-50 to-white p-8 min-h-full cv-preview-container flex flex-col">
+      <div id={id} className="bg-gradient-to-br from-indigo-50 to-white p-8 min-h-full cv-preview-container flex flex-col" style={baseStyle}>
         <div className="flex gap-6 mb-5">
           <div className="flex-shrink-0">
             {personalInfo.avatar ? (
@@ -90,7 +94,7 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
   // Template 2: Cổ Điển (Classic)
   if (templateId === 't2') {
     return (
-      <div id={id} className="bg-white p-9 min-h-full cv-preview-container flex flex-col">
+      <div id={id} className="bg-white p-9 min-h-full cv-preview-container flex flex-col" style={baseStyle}>
         <div className="border-b-4 border-emerald-800 pb-4 mb-5">
           <div className="flex gap-6">
             <div>
@@ -173,7 +177,7 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
   // Template 3: Tối Giản (Minimalist)
   if (templateId === 't3') {
     return (
-      <div id={id} className="bg-white p-8 min-h-full cv-preview-container flex flex-col">
+      <div id={id} className="bg-white p-8 min-h-full cv-preview-container flex flex-col" style={baseStyle}>
         <div className="border-b border-gray-400 pb-4 mb-5">
           <h1 className="text-3xl font-bold text-gray-900">{personalInfo.fullName}</h1>
           <p className="text-xs text-gray-700 mt-1">{personalInfo.objective}</p>
@@ -235,7 +239,7 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
   // Template 4: Sáng Tạo (Creative)
   if (templateId === 't4') {
     return (
-      <div id={id} className="bg-gradient-to-b from-slate-900 to-slate-800 text-white p-8 min-h-full cv-preview-container flex flex-col">
+      <div id={id} className="bg-gradient-to-b from-slate-900 to-slate-800 text-white p-8 min-h-full cv-preview-container flex flex-col" style={baseStyle}>
         <div className="mb-6">
           <div className="flex gap-4 items-end mb-4">
             {personalInfo.avatar ? (
@@ -312,7 +316,7 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
   // Template 5: Kinh Doanh Cổ Điển (Business Classic)
   if (templateId === 't5') {
     return (
-      <div id={id} className="bg-white p-9 min-h-full cv-preview-container flex flex-col">
+      <div id={id} className="bg-white p-9 min-h-full cv-preview-container flex flex-col" style={baseStyle}>
         <div className="border-t-4 border-b-2 border-slate-800 py-4 mb-5">
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">{personalInfo.fullName}</h1>
           <p className="text-xs font-semibold text-slate-700 uppercase tracking-widest mt-1">Mục Tiêu Chuyên Nghiệp</p>
@@ -377,7 +381,7 @@ export const CVTemplate: React.FC<CVTemplateProps> = ({ data, id }) => {
   // Template 6: Thiết Kế & Marketing (Design)
   if (templateId === 't6') {
     return (
-      <div id={id} className="bg-white p-8 min-h-full cv-preview-container flex flex-col">
+      <div id={id} className="bg-white p-8 min-h-full cv-preview-container flex flex-col" style={baseStyle}>
         <div className="flex gap-6 mb-5">
           {personalInfo.avatar ? (
             <img src={personalInfo.avatar} alt="Avatar" className="w-24 h-24 rounded-full object-cover border-4 border-purple-500 shadow-md" />

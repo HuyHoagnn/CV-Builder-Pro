@@ -248,7 +248,10 @@ const App: React.FC = () => {
         logging: false,
         backgroundColor: '#ffffff',
         allowTaint: true,
-        imageTimeout: 0
+        imageTimeout: 0,
+        letterRendering: true,
+        windowHeight: element.scrollHeight,
+        windowWidth: element.scrollWidth
       });
       
       element.style.backgroundColor = originalBg;
@@ -257,7 +260,21 @@ const App: React.FC = () => {
       const pdf = new (window as any).jspdf.jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      
+      // Handle multiple pages if content is longer than one page
+      let heightLeft = pdfHeight;
+      let position = 0;
+      
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+      heightLeft -= pdf.internal.pageSize.getHeight();
+      
+      while (heightLeft > 0) {
+        position = heightLeft - pdfHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pdf.internal.pageSize.getHeight();
+      }
+      
       pdf.save(`${activeCV?.title || 'CV'}.pdf`);
     } catch (error) {
       console.error('Export PDF error:', error);
