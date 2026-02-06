@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { User, CVData, Template } from '../types';
-import { Users, FileText, LayoutTemplate, TrendingUp, Trash2, Plus } from 'lucide-react';
+import { Users, FileText, LayoutTemplate, TrendingUp, Trash2, Plus, Edit } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 interface AdminDashboardProps {

@@ -9,6 +9,7 @@ import {
   optimizeCVContent,
   generateCVFromInfo,
   suggestCVImprovements,
+  generateCoverLetter,
   analyzeCVQuality
 } from './services/aiAssistant';
 import { supabase, db } from './services/supabase';
@@ -19,6 +20,7 @@ import {
   Download, 
   Sparkles, 
   ArrowLeft, 
+  Save, 
   Layout, 
   User as UserIcon, 
   Briefcase, 
